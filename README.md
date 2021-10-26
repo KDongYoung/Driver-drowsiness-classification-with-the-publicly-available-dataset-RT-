@@ -12,23 +12,15 @@ Preprocessed dataset: https://figshare.com/articles/dataset/Multi-channel_EEG_re
 
 -------------------
 Rquirements
+
 python ≥ 3.8.10
-
 numpy ≥ 1.20.3
-
 pandas ≥ 1.2.5
-
 scipy ≥ 1.6.2
-
 torch ≥ 1.9.0
 
-
 sklearn 
-
 random
-
 os
-
 argparse
-
 collection
