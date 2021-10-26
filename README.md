@@ -2,7 +2,8 @@
 Classifiying driver drowsiness based on the dataset from the paper "Multi-channel EEG recordings during a sustained-attention driving task"
 
 1. Dataset paper
-Title: Multi-channel EEG recordings during a sustained-attention driving task
+
+Title: Multi-channel EEG recordings during a sustained-attention driving task \\
 Author: Z. Cao, C.-H. Chuang, J.-K. King, and C.-T. Lin
 Journal: Scientific data
 Year: 2019
