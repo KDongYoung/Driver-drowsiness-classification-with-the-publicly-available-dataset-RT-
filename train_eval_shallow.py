@@ -52,3 +52,18 @@ def eval(model, device, test_loader):
     print('Test set: Average loss: {:.4f}, Accuracy: {}/{} ({:.4f}%), Balanced Accuracy: {:.4f}% '
         .format(loss, sum(correct), len(test_loader.dataset), 100. * sum(correct) / len(test_loader.dataset), 100. * balanced_accuracy_score(targets,preds)))
     return loss, 100. * sum(correct) / len(test_loader.dataset), 100. * balanced_accuracy_score(targets,preds)
+
+## test_prediction
+def test_eval(model, device, test_loader):
+    print("================= EVAL Start =================")
+    model.eval() 
+
+    preds=[]
+    with torch.no_grad():
+        for datas in test_loader:
+            data = datas[0].to(device)
+            #print(target)
+            outputs=model(data)
+            preds.extend(outputs.argmax(dim=1,keepdim=False).cpu().numpy())# get the index of the max probability 인덱스            
+    
+    return preds

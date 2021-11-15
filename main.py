@@ -72,6 +72,7 @@ def Experiment(subject_id):
     if not os.path.isdir(path):
         os.makedirs(path)
         os.makedirs(path + '/models')
+        os.makedirs(path + '/prediction')
 
     # save ARGUEMENT
     with open(path + '/args.txt', 'w') as f:
@@ -113,18 +114,12 @@ def Experiment(subject_id):
     train+valid : test = 8:2
     train : valid = 9:1
     """
+    
+    ########### train, valid, test 불러오는 loader 구현 필요
     data=DriverDrowsinessDataset_RT.DriverDrowsiness_ReactionTime2(args.data_root, subjectList) # sbj의 데이터 불러오기
     dataset=data[subject_id]
     dataset_size=len(dataset)
-
-    test_size=int(dataset_size*0.2)
-    valid_size=int((dataset_size-test_size)*0.1)
-    train_size=dataset_size-valid_size-test_size
-    train_set, valid_set, test_set= random_split(dataset, [train_size, valid_size, test_size]) # train:valid=9:1, train+valid:test=8:2
-    print(dataset_size, train_size, valid_size, test_size)
-    train_weights=make_weights_for_balanced_classes(train_set)
-
-    # train, vaidation, test loader
+    
     train_loader = torch.utils.data.DataLoader(train_set, sampler=torch.utils.data.WeightedRandomSampler(train_weights,num_samples=len(train_weights)), batch_size=args.batch_size) # drop_last가 true일까 false일까?
     valid_loader = torch.utils.data.DataLoader(valid_set, batch_size=args.batch_size) #
     test_loader = torch.utils.data.DataLoader(test_set, batch_size=args.batch_size, shuffle=True)
@@ -140,7 +135,7 @@ def Experiment(subject_id):
         
         # compare validation accuracy of this epoch with the best accuracy score
         # if validation accuracy >= best accuracy, then save model(.pt)
-        if valid_score >= best_balanced_acc:
+        if valid_balanced_score >= best_balanced_acc:
             print("Higher accuracy then before: epoch {}".format(epochidx))
             best_balanced_acc = valid_balanced_score
             torch.save(model.state_dict(), os.path.join(path, 'models',"subject{}_bestmodel".format(subject_id+1)))
@@ -156,10 +151,10 @@ def Experiment(subject_id):
     best_model.load_state_dict(torch.load(os.path.join(path, 'models',"subject{}_bestmodel").format(subject_id+1), map_location=device))
     if cuda: 
         best_model.cuda(device=device)
-    test_loss, test_score, balanced_score = eval(best_model, device, test_loader)
-    print("Best accuracy model => test_loss: {}, test_score: {}".format(test_loss,test_score))
+    pred = test_eval(best_model, device, test_loader)
+    np.save(path + '/S'+str(subject_id)+"_y", pred)
 
-    return test_score, balanced_score
+    return valid_score, valid_balanced_score
 
 ###########################################################################
 if __name__ == '__main__':
