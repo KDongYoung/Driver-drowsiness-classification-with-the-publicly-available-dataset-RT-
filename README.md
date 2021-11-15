@@ -21,5 +21,6 @@ Rquirements
 python ≥ 3.8.10   numpy ≥ 1.20.3  pandas ≥ 1.2.5  scipy ≥ 1.6.2   torch ≥ 1.9.0
 
 sklearn   random  os  argparse  collection
+
 -------------------
 해당 프로젝트를 선택하여 진행하는 경우에, 성능 평가를 위한 TEST set이 필요한 경우에 dy_kim@korea.ac.kr로 문의바랍니다.
