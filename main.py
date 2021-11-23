@@ -95,7 +95,7 @@ def Experiment(args, subjectList ,subject_id):
     ############################## Inference 용도 ##############################
     test_dataset=DriverDrowsinessDataset_RT.DriverDrowsiness_ReactionTime("test", args.data_root, subjectList) # sbj의 test 데이터 불러오기
     test_set=test_dataset[subject_id]   
-    test_loader = torch.utils.data.DataLoader(test_set, batch_size=args.batch_size, shuffle=True)
+    test_loader = torch.utils.data.DataLoader(test_set, batch_size=args.batch_size, shuffle=False)
     best_model = DeepConvNet(args.n_classes, args.n_channels, args.n_timewindow)
     best_model.load_state_dict(torch.load(os.path.join(path, 'models',"subject{}_bestmodel").format(subject_id+1), map_location=device))
     if cuda: 
