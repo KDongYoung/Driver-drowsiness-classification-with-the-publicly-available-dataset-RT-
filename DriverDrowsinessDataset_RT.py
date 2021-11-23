@@ -23,7 +23,7 @@ class EEGDataset(Dataset):
 
             return X, y, self.subj_id
         else:
-            X = self.dataset[idx][0]  # for only eeg
+            X = self.DATA[idx][0]  # for only eeg
 
 ''' dataset 생성 '''
 class DriverDrowsiness_ReactionTime():
