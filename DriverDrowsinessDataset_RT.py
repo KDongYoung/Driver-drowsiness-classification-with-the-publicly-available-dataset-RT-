@@ -1,73 +1,61 @@
 from torch.utils.data import Dataset
 import numpy as np
-from scipy import io
+
 """
 Make a EEG dataset
 X: EEG data
 Y: KSS score
 """
 class EEGDataset(Dataset):
-    def __init__(self, dataset, subj_id):
-        self.dataset = dataset
-        self.len = len(dataset)
+    def __init__(self, phase, DATA, subj_id):
+        self.phase=phase
+        self.DATA = DATA
+        self.len = len(DATA)
         self.subj_id = subj_id
     def __len__(self):
         return self.len
     def __getitem__(self, idx):
-        X = self.dataset[idx][:,0:750][0:30].astype('float32')  # for only eeg
-        y = self.dataset[idx][:,0][-1].astype('int64') # X 1개 (segment 1개)에 따라 y 1개
+        # dataset 구성: EEG 30 channel + Reaction Time
+        if self.phase !="test":
+            X = self.DATA[idx][0][0] # for only eeg
+            y = self.DATA[idx][1] #(segment 1개)에 따라 y 1개
+            X=np.expand_dims(X,axis=0) # (1, channel, time) batch 형태로
 
-        X=np.expand_dims(X,axis=0) # (1, channel, time) batch 형태로
-        # y=np.expand_dims(y,axis=0) # y는 단순히 숫자로만
-    
-        return X, y, self.subj_id
+            return X, y, self.subj_id
+        else:
+            X = self.dataset[idx][0]  # for only eeg
 
-'''
-dataset 생성
-'''
-class DriverDrowsiness_ReactionTime2():
-    def __init__(self,root_path, SUBJECT_LIST):
+''' dataset 생성 '''
+class DriverDrowsiness_ReactionTime():
+    def __init__(self, phase, root_path, SUBJECT_LIST):
         if root_path is None:
             raise ValueError('Data directory not specified!')
 
         self.datasets=[]
         self.subjectList=SUBJECT_LIST
-            
-        self.drowsy_num=0
-        self.alert_num=0
-        for idx, SBJ_NAME in enumerate(self.subjectList):
-            ORI_DATA=io.loadmat(root_path+"s"+str(self.subjectList[idx])+'.mat') # data 불러오기
-    
-            self.x=ORI_DATA["epoch"]
-            self.y=ORI_DATA["rt"][0]
-            self.alertRT=ORI_DATA["tau0"]
-            ##### 
-            num_segment=[0,0]
-            a_idx=[]
-            d_idx=[]
-            for i in range(self.x.shape[0]):
-                rt=self.y[i]
-                if rt<self.alertRT*1.5:
-                    self.x[i][-1]=0
-                    self.alert_num+=1
-                    num_segment[0]+=1
-                    a_idx.append(i)
-                elif rt>self.alertRT*2.5:
-                    self.x[i][-1]=1
-                    self.drowsy_num+=1
-                    num_segment[1]+=1
-                    d_idx.append(i)
+        
+        if phase != "test":
+            for idx, SBJ_NAME in enumerate(self.subjectList):
+                ORI_DATA=np.load(root_path+phase+"/s"+str(SBJ_NAME)+"_"+phase+".npy", allow_pickle=True) # train, valid data 불러오기
                 
-            print("s%d" % (self.subjectList[idx]), num_segment)
-            # # nonsleep=sum(num_segment[0:6])
-            # sleep=sum(num_segment[7:])
-            # with open("subject_sleep_chancelevel.txt", 'a') as f:
-            #     f.write("{}: sleep:{}\n".format(SBJ_NAME,100.*sleep/sum(num_segment)))
+                DATA=[]
+                for i in range(len(ORI_DATA)//3):
+                    datas=[ORI_DATA[i*3],ORI_DATA[i*3+1],ORI_DATA[i*3+2]]
+                    DATA.append(datas)
 
-            wo_idx=a_idx+d_idx
-            self.datasets.append(EEGDataset(self.x[wo_idx],idx))
+                self.datasets.append(EEGDataset(phase, DATA, idx))
+                print("s"+str(SBJ_NAME)+" segment number:",len(ORI_DATA))
+        else: 
+            for idx, SBJ_NAME in enumerate(self.subjectList):
+                ORI_DATA=np.load(root_path+"/Test_x/S"+str(SBJ_NAME)+"_x.npy", allow_pickle=True) # test data 불러오기
 
-        print("Total alert : drowsy =",self.alert_num,":",self.drowsy_num)
+                DATA=[]
+                for i in range(len(ORI_DATA)//3):
+                    datas=[ORI_DATA[i]]
+                    DATA.append(datas)
+
+                self.datasets.append(EEGDataset(phase, DATA, idx))
+                print("s"+str(SBJ_NAME)+" segment number:",len(ORI_DATA))
 
     def __getitem__(self, index):
         return self.datasets[index]# subject 1명씩
