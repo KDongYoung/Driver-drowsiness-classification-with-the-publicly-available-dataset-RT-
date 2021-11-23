@@ -23,4 +23,7 @@ python ≥ 3.8.10   numpy ≥ 1.20.3  pandas ≥ 1.2.5  scipy ≥ 1.6.2   torch 
 sklearn   random  os  argparse  collection
 
 -------------------
+train.npy와 valid.npy 파일들에는 EEG data와 label이 같이 들어가 있습니다. (alert:0, drowsy:1)
+
+
 해당 프로젝트를 선택하여 진행하는 경우에, 문의사항이 있는 경우에 dy_kim@korea.ac.kr로 문의바랍니다.
