@@ -51,7 +51,7 @@ class DriverDrowsiness_ReactionTime():
                 ORI_DATA=np.load(root_path+"/Test_x/S"+str(SBJ_NAME)+"_x.npy", allow_pickle=True) # test data 불러오기
 
                 DATA=[]
-                for i in range(len(ORI_DATA)//3):
+                for i in range(len(ORI_DATA)):
                     datas=[ORI_DATA[i]]
                     DATA.append(datas)
 
