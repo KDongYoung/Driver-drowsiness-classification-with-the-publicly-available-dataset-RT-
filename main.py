@@ -7,7 +7,7 @@ import argparse
 from collections import Counter
 
 from Model_DeepConvNet import DeepConvNet
-from train_eval_predict import Train, valid_EVAL, predict_EVAL # train, evaluation, prediction
+from train_eval_predict import Train, valid_EVAL, predict_EVAL 
 
 ###########################################################################
 # get weights (use the number of samples)
@@ -29,6 +29,7 @@ def make_weights_for_balanced_classes(dataset):
         weights[i] = weight_per_class[int(y)]
 
     return weights
+###########################################################################
 
 def Experiment(args, subjectList ,subject_id):
     # make a directory to save results, models
@@ -68,11 +69,11 @@ def Experiment(args, subjectList ,subject_id):
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs-1)
 
     ########### train, valid data loader
-    train_dataset=DriverDrowsinessDataset_RT.DriverDrowsiness_ReactionTime("train", args.data_root, subjectList) # sbj의 데이터 불러오기
+    train_dataset=DriverDrowsinessDataset_RT.DriverDrowsiness_ReactionTime("train", args.data_root, subjectList) 
     train_set=train_dataset[subject_id]
-    train_weights=make_weights_for_balanced_classes(train_set)
+    train_weights=make_weights_for_balanced_classes(train_set) # for class balanced sampling
 
-    valid_dataset=DriverDrowsinessDataset_RT.DriverDrowsiness_ReactionTime("valid", args.data_root, subjectList) # sbj의 데이터 불러오기
+    valid_dataset=DriverDrowsinessDataset_RT.DriverDrowsiness_ReactionTime("valid", args.data_root, subjectList) 
     valid_set=valid_dataset[subject_id]    
 
     train_loader = torch.utils.data.DataLoader(train_set, sampler=torch.utils.data.WeightedRandomSampler(train_weights, num_samples=len(train_weights)), batch_size=args.batch_size)
@@ -83,7 +84,7 @@ def Experiment(args, subjectList ,subject_id):
     for epochidx in range(1, args.epochs):
         print("EPOCH_IDX: ",epochidx)
         Train(20, model, device, train_loader, optimizer, scheduler) # train
-        valid_loss, valid_score, valid_balanced_score = valid_EVAL(model, device, valid_loader) # valid
+        _, valid_score, valid_balanced_score = valid_EVAL(model, device, valid_loader) # valid
         
         # compare validation accuracy of this epoch with the best accuracy score
         # if validation accuracy >= best accuracy, then save model(.pt)
@@ -92,8 +93,8 @@ def Experiment(args, subjectList ,subject_id):
             best_balanced_acc = valid_balanced_score
             torch.save(model.state_dict(), os.path.join(path, 'models',"subject{}_bestmodel".format(subject_id+1)))
 
-    ############################## Inference 용도 ##############################
-    test_dataset=DriverDrowsinessDataset_RT.DriverDrowsiness_ReactionTime("test", args.data_root, subjectList) # sbj의 test 데이터 불러오기
+    ############################## Inference ##############################
+    test_dataset=DriverDrowsinessDataset_RT.DriverDrowsiness_ReactionTime("test", args.data_root, subjectList) # test sbj data
     test_set=test_dataset[subject_id]   
     test_loader = torch.utils.data.DataLoader(test_set, batch_size=args.batch_size, shuffle=False)
     best_model = DeepConvNet(args.n_classes, args.n_channels, args.n_timewindow)
@@ -126,7 +127,7 @@ if __name__ == '__main__':
     exp_type=args.result_dir
     best_model_result_path=exp_type+'/'+exp_type+'_Accuracy.txt'
 
-    subjectList=[5, 15, 24, 31, 32, 36, 37, 38, 42, 46, 47, 48, 49, 52] # subject number
+    subjectList=[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14] # subject number
 
     accs=[]
     balanced=[]

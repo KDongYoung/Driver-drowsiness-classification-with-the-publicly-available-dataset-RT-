@@ -15,11 +15,11 @@ class EEGDataset(Dataset):
     def __len__(self):
         return self.len
     def __getitem__(self, idx):
-        # dataset 구성: EEG 30 channel + Reaction Time
+        # EEG 30 channel + Reaction Time
         if self.phase !="test":
             X = self.DATA[idx][0][0] # for only eeg
-            y = self.DATA[idx][1] #(segment 1개)에 따라 y 1개
-            X=np.expand_dims(X,axis=0) # (1, channel, time) batch 형태로
+            y = self.DATA[idx][1] 
+            X=np.expand_dims(X,axis=0) # (1, channel, time) batch shape
 
             return X, y, self.subj_id
         else:
@@ -37,7 +37,7 @@ class DriverDrowsiness_ReactionTime():
         
         if phase != "test":
             for idx, SBJ_NAME in enumerate(self.subjectList):
-                ORI_DATA=np.load(root_path+phase+"/s"+str(SBJ_NAME)+"_"+phase+".npy", allow_pickle=True) # train, valid data 불러오기
+                ORI_DATA=np.load(root_path+phase+"/S"+str(SBJ_NAME)+"_"+phase+".npy", allow_pickle=True) # load train, valid data 
                 
                 DATA=[]
                 for i in range(len(ORI_DATA)//3):
@@ -48,7 +48,7 @@ class DriverDrowsiness_ReactionTime():
                 print("s"+str(SBJ_NAME)+" segment number:",len(ORI_DATA))
         else: 
             for idx, SBJ_NAME in enumerate(self.subjectList):
-                ORI_DATA=np.load(root_path+"/Test_x/S"+str(SBJ_NAME)+"_x.npy", allow_pickle=True) # test data 불러오기
+                ORI_DATA=np.load(root_path+"/test_x/S"+str(SBJ_NAME)+"_x.npy", allow_pickle=True) # load test data 
 
                 DATA=[]
                 for i in range(len(ORI_DATA)):
@@ -59,7 +59,7 @@ class DriverDrowsiness_ReactionTime():
                 print("s"+str(SBJ_NAME)+" segment number:",len(ORI_DATA))
 
     def __getitem__(self, index):
-        return self.datasets[index]# subject 1명씩
-
+        return self.datasets[index] # one subject at a time 
+    
     def __len__(self):
         return len(self.datasets)
