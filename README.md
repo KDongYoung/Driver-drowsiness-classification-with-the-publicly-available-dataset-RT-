@@ -6,6 +6,8 @@ Classifiying driver drowsiness based on the dataset from the dataset available
 [\[Original version\]](https://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task/6427334/5)
 [\[Preprocessed version\]](https://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task_preprocessed_dataset_/7666055/3)
 
+1. S%d_train.npy, S%d_valid.npy file includes the EEG data and class label (alert:0, drowsy:1)
+
 ### Dataset Citation
 
 ```
@@ -29,9 +31,6 @@ python ≥ 3.8.10   numpy ≥ 1.20.3  pandas ≥ 1.2.5  scipy ≥ 1.6.2   torch 
 sklearn   random  os  argparse  collection
 
 IF using a Docker, use the recent image file ("pytorch:22.04-py3") uploaded in the [\[NVIDIA pytorch\]](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch) when running a container
-
-S%d_train.npy, S%d_valid.npy file includes the EEG data and class label (alert:0, drowsy:1)
-
 
 -------------
 
