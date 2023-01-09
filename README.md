@@ -3,8 +3,8 @@
 This is an proposed midterm project for "Applications and practice in neural networks" course
 
 Classifiying driver drowsiness based on the dataset from the dataset available 
-[\[Original\]] https://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task/6427334/5
-[\[Preprocessed\]] https://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task_preprocessed_dataset_/7666055/3
+[\[Original\]] (ttps://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task/6427334/5)
+[\[Preprocessed\]] (ttps://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task_preprocessed_dataset_/7666055/3)
 
 ## Dataset Citation
 
@@ -36,4 +36,3 @@ S%d_train.npy, S%d_valid.npy file includes the EEG data and class label (alert:0
 -------------
 
 If you have further questions of the project, please contact dy_kim@korea.ac.kr
-해당 프로젝트를 선택하여 진행하는 경우에, 문의사항이 있는 경우에 y_kim@korea.ac.kr로 문의바랍니다.
