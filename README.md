@@ -3,8 +3,8 @@
 This is an proposed midterm project for "Applications and practice in neural networks" course
 
 Classifiying driver drowsiness based on the dataset from the dataset available 
-[\[Original\]] (https://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task/6427334/5)
-[\[Preprocessed\]] (https://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task_preprocessed_dataset_/7666055/3)
+[\[Original version\]](https://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task/6427334/5)
+[\[Preprocessed version\]](https://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task_preprocessed_dataset_/7666055/3)
 
 ## Dataset Citation
 
