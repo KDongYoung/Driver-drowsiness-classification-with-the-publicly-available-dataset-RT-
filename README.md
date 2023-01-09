@@ -6,7 +6,7 @@ Classifiying driver drowsiness based on the dataset from the dataset available
 [\[Original version\]](https://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task/6427334/5)
 [\[Preprocessed version\]](https://figshare.com/articles/dataset/Multi-channel_EEG_recordings_during_a_sustained-attention_driving_task_preprocessed_dataset_/7666055/3)
 
-## Dataset Citation
+### Dataset Citation
 
 ```
 @article{cao2019multi,
